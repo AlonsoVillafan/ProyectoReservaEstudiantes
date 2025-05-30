@@ -1,0 +1,49 @@
+-- Crear base de datos
+CREATE DATABASE IF NOT EXISTS sistema_reservas
+DEFAULT CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+
+-- Usar la base de datos
+USE sistema_reservas;
+
+-- Tabla de alumnos (precargada desde Excel)
+CREATE TABLE alumnos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    codigo_estudiante VARCHAR(20) UNIQUE NOT NULL,
+    nombres VARCHAR(100) NOT NULL,
+    
+    carrera VARCHAR(100) NOT NULL,
+    codigo_carrera VARCHAR(20),
+    campus VARCHAR(50),
+    password VARCHAR(150), -- Almacenada con hash (bcrypt, por ejemplo)
+    registrado BOOLEAN DEFAULT FALSE
+);
+
+-- Tabla de PCs (opcional, si se quiere manejar por computadora)
+CREATE TABLE pcs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_pc VARCHAR(50) NOT NULL,
+    laboratorio VARCHAR(50),
+    disponible BOOLEAN DEFAULT TRUE
+);
+
+-- Tabla de reservas
+CREATE TABLE reservas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_alumno INT NOT NULL,
+    id_pc INT, -- puede ser NULL si no se especifica PC
+    fecha DATE NOT NULL,
+    hora_inicio TIME NOT NULL,
+    hora_fin TIME NOT NULL,
+    estado ENUM('pendiente', 'confirmada', 'cancelada') DEFAULT 'pendiente',
+    FOREIGN KEY (id_alumno) REFERENCES alumnos(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_pc) REFERENCES pcs(id) ON DELETE SET NULL
+);
+
+-- Tabla de usuarios administradores (para gestión)
+CREATE TABLE usuarios_admin (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_usuario VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
