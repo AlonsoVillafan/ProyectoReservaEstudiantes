@@ -17,15 +17,30 @@
     
     <main>
         <section>
-            <h1>Iniciar Sesion</h1>
+            <h1>Registra tus datos:</h1>
             <form action="" method="post">
-                <input type="codigo" name="codigo" placeholder="Ingresa tu codigo">
-                <input type="password" name="password" placeholder="Password">              
-            </form>
-            <a href=""></a>
+                <label for="codigo">Codigo:</label>
+                <input type="text" name="codigo" id="codigo" required>
 
-            
+                <label for="nombres">Nombres:</label>
+                <input type="text" name="nombres" required>
+
+                <label for="apellidos">Apellidos:</label>
+                <input type="text" name="apellidos" required>
+
+                <label for="password">Password:</label>
+                <input type="password" name="password" required>
+                
+                <label for="confirmar_password">Confirmar Password</label>
+                <input type="password" name="confirmar_password" id="confirmar_password" required>
+
+                <button type="submit">Registrar</button>
+            </form>  
         </section>
     </main>
+
+    <footer>
+        <p>Todos los derechos reservados 2025.</p>
+    </footer>
 </body>
 </html>

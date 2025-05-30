@@ -11,9 +11,10 @@ CREATE TABLE alumnos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     codigo_estudiante VARCHAR(20) UNIQUE NOT NULL,
     nombres VARCHAR(100) NOT NULL,
-    
-    carrera VARCHAR(100) NOT NULL,
+    apellido_materno VARCHAR(100) NOT NULL,
+    apellido_paterno VARCHAR(100) NOT NULL,
     codigo_carrera VARCHAR(20),
+    carrera VARCHAR(100) NOT NULL,
     campus VARCHAR(50),
     password VARCHAR(150), -- Almacenada con hash (bcrypt, por ejemplo)
     registrado BOOLEAN DEFAULT FALSE
