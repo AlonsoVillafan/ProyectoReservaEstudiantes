@@ -6,40 +6,46 @@ COLLATE utf8mb4_unicode_ci;
 -- Usar la base de datos
 USE sistema_reservas;
 
--- Tabla de alumnos (precargada desde Excel)
-CREATE TABLE alumnos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+-- 1. Tabla de estudiantes (precargada desde Excel)
+CREATE TABLE estudiantes (
+    id_estudiante INT AUTO_INCREMENT PRIMARY KEY,
     codigo_estudiante VARCHAR(20) UNIQUE NOT NULL,
     nombres VARCHAR(100) NOT NULL,
     apellido_materno VARCHAR(100) NOT NULL,
     apellido_paterno VARCHAR(100) NOT NULL,
-    codigo_carrera VARCHAR(20),
+    codigo_carrera VARCHAR(20) NOT NULL,
     carrera VARCHAR(100) NOT NULL,
-    campus VARCHAR(50),
+    campus VARCHAR(30) NOT NULL,
     password VARCHAR(150), -- Almacenada con hash (bcrypt, por ejemplo)
     registrado BOOLEAN DEFAULT FALSE
 );
 
--- Tabla de PCs (opcional, si se quiere manejar por computadora)
-CREATE TABLE pcs (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre_pc VARCHAR(50) NOT NULL,
-    laboratorio VARCHAR(50),
-    disponible BOOLEAN DEFAULT TRUE
+-- 2. Tipos de reserva (PC, Mesa)
+CREATE TABLE tipos_reserva (
+  id_tipo_reserva INT AUTO_INCREMENT PRIMARY KEY,
+  nombre_tipo_reserva VARCHAR(50) NOT NULL UNIQUE -- Ej: PC de laboratorio, Mesa de taller
 );
 
--- Tabla de reservas
+-- 3. Recursos (PC 1, Mesa 1, etc.)
+CREATE TABLE recursos (
+  id_recurso INT AUTO_INCREMENT PRIMARY KEY,
+  id_tipo_reserva INT NOT NULL,
+  nombre_recurso VARCHAR(50) NOT NULL,
+  FOREIGN KEY (id_tipo_reserva) REFERENCES tipos_reserva(id_tipo_reserva)
+);
+
+
 CREATE TABLE reservas (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    id_alumno INT NOT NULL,
-    id_pc INT, -- puede ser NULL si no se especifica PC
-    fecha DATE NOT NULL,
-    hora_inicio TIME NOT NULL,
-    hora_fin TIME NOT NULL,
-    estado ENUM('pendiente', 'confirmada', 'cancelada') DEFAULT 'pendiente',
-    FOREIGN KEY (id_alumno) REFERENCES alumnos(id) ON DELETE CASCADE,
-    FOREIGN KEY (id_pc) REFERENCES pcs(id) ON DELETE SET NULL
+    id_estudiante INT NOT NULL,
+    id_equipo INT NOT NULL,
+    actividad VARCHAR(100) NOT NULL,
+    hora_inicio DATETIME NOT NULL,
+    hora_fin DATETIME NOT NULL,
+    FOREIGN KEY (id_estudiante) REFERENCES estudiante(id_estudiante),
+    FOREIGN KEY (id_equipo) REFERENCES equipo(id)
 );
+
 
 -- Tabla de usuarios administradores (para gestión)
 CREATE TABLE usuarios_admin (
